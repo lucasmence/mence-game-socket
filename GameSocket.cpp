@@ -41,17 +41,14 @@ const GameData GameSocket::receive()
 
 	this->socket.receive(packet, sender, receivePort);
 
-	GameData data(GameData{ {}, {} });
+	GameData data(GameData{ {} });
 
 	while (!packet.endOfPacket())
 	{
-		float floatValue = 0.f;
 		std::string stringValue = "";
 
 		if (packet >> stringValue)
 			data.strings.emplace_back(stringValue);
-		else if (packet >> floatValue)
-			data.floats.emplace_back(floatValue);
 	}
 
 	this->addClient(GameClient{true, sender, receivePort});
@@ -87,8 +84,6 @@ const bool GameSocket::sendTarget(GameData &data, GameClient target)
 {
 	sf::Packet packet;
 
-	for (auto& floatIndex : data.floats)
-		packet << floatIndex;
 	for (auto& stringIndex : data.strings)
 		packet << stringIndex;
 
