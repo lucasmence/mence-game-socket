@@ -20,7 +20,6 @@ struct GameClient
 struct GameData
 {
 	std::vector<std::string> strings;
-	std::vector<float> floats;
 };
 
 class GameSocket
