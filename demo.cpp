@@ -21,7 +21,7 @@ int main()
 
 	if (name != "server")
 	{
-		std::cout << "Nice to meet you " + name + "!";
+		std::cout << "Nice to meet you " + name + "!\n";
 
 		float duration = 60.f, interval = 0.f;
 		clock.restart();
@@ -40,14 +40,14 @@ int main()
 			GameData data = socket.receive();
 			std::string message = data.strings.size() > 0 ? data.strings.at(0) : "";
 			if (message != "") //print
-				std::cout << "Got: " << message << std::endl;
+				std::cout << "Got from server - broadcast: " << message << std::endl;
 
 			interval += time;
 			if (interval >= 1.f)
 			{
 				//send
 				interval = 0.f;
-				data = { {name + " sent hi!"}, {} };
+				data = { {name + " sent hi!", std::to_string(port)}};
 				socket.send(data);
 			}
 		}
@@ -70,14 +70,14 @@ int main()
 
 			//receive
 			GameData data = socket.receive();
-			std::string message = data.strings.size() > 0 ? data.strings.at(0) : "";
+			std::string message = data.strings.size() > 0 ? data.strings.at(0) : "", portValue = data.strings.size() > 1 ? data.strings.at(1) : "";
 
 			if (message != "")
 			{
 				//print
-				std::cout << "Got: " << message << std::endl;
+				std::cout << "Got from client: " << message << " / from port: " << portValue << std::endl;
 				//send
-				data = { {message}, {} };
+				data = { {message} };
 				socket.send(data);
 			}
 		}
