@@ -26,7 +26,7 @@ int main()
 		float duration = 60.f, interval = 0.f;
 		clock.restart();
 
-		//inicia	
+		//start	
 		socket.start(SocketType::stClient, 54123, address != "" ? address : "mence.ddns.net");
 
 		while (duration > 0.f)
@@ -36,16 +36,16 @@ int main()
 			float time = timer.asSeconds();
 			duration -= time;
 
-			//recebe
+			//receive
 			GameData data = socket.receive();
 			std::string message = data.strings.size() > 0 ? data.strings.at(0) : "";
-			if (message != "")
+			if (message != "") //print
 				std::cout << "Got: " << message << std::endl;
 
 			interval += time;
 			if (interval >= 1.f)
 			{
-				//envia
+				//send
 				interval = 0.f;
 				data = { {name + " sent hi!"}, {} };
 				socket.send(data);
@@ -68,15 +68,15 @@ int main()
 			float time = timer.asSeconds();
 			duration -= time;
 
-			//recebe
+			//receive
 			GameData data = socket.receive();
 			std::string message = data.strings.size() > 0 ? data.strings.at(0) : "";
 
 			if (message != "")
 			{
-				//imprime
+				//print
 				std::cout << "Got: " << message << std::endl;
-				//envia
+				//send
 				data = { {message}, {} };
 				socket.send(data);
 			}
